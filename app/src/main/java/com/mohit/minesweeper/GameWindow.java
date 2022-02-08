@@ -3,6 +3,8 @@ package com.mohit.minesweeper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
 import java.util.Random;
 
 public class GameWindow extends AppCompatActivity {
@@ -18,7 +21,7 @@ public class GameWindow extends AppCompatActivity {
     MineButton[] mineButton;
     int h;
     ImageView gameState;
-    TextView availableFlags;
+    TextView availableFlags, time_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class GameWindow extends AppCompatActivity {
 
         gameState = findViewById(R.id.game_state);
         availableFlags = findViewById(R.id.available_flags);
+        time_view = findViewById(R.id.stopwatch);
 
         LinearLayout verLayout = findViewById(R.id.game_area_layout);
         
@@ -43,12 +47,12 @@ public class GameWindow extends AppCompatActivity {
         System.out.println(MainActivity.width);
         System.out.println(MainActivity.height);
 
-        for(int i = 0; i < horLayout.length; i++){
+        for(int i = 0; i < horLayout.length; i++) {
 
             horLayout[i] = new LinearLayout(getApplicationContext());
             horLayout[i].setOrientation(LinearLayout.HORIZONTAL);
 
-            for(int j = 0; j < 10; j++){
+            for (int j = 0; j < 10; j++) {
                 mineButton[(10 * i) + j] = new MineButton(getApplicationContext());
                 mineButton[(10 * i) + j].setButtonId((10 * i) + j);
                 int finalI = i;
@@ -56,7 +60,17 @@ public class GameWindow extends AppCompatActivity {
 
                 mineButton[(10 * i) + j].setOnClickListener(view -> {
 
-                    if(mineButton[(10 * finalI) + finalJ].getRealFlag() == 1){
+                    if(!running){
+                        running = true;
+                        runTimer();
+                    }
+
+                    if (System.currentTimeMillis() - mineButton[(10 * finalI) + finalJ].prevClick > 800 && !MainActivity.isDTSC) {
+                        mineButton[(10 * finalI) + finalJ].prevClick = System.currentTimeMillis();
+                        return;
+                    }
+
+                    if (mineButton[(10 * finalI) + finalJ].getRealFlag() == 1) {
                         return;
                     }
 
@@ -97,18 +111,18 @@ public class GameWindow extends AppCompatActivity {
                     isGameFinished();
                 });
 
+
                 mineButton[(10 * i) + j].setOnLongClickListener(view -> {
 
-                    if(mineButton[(10 * finalI) + finalJ].getRealFlag() == 0){
+                    if (mineButton[(10 * finalI) + finalJ].getRealFlag() == 0) {
 
-                        if(Integer.parseInt(availableFlags.getText().toString()) > 0){
-                            availableFlags.setText(Integer.toString(Integer.parseInt(availableFlags.getText().toString()) - 1));
+                        if (Integer.parseInt(availableFlags.getText().toString()) > 0) {
+                            availableFlags.setText("" + (Integer.parseInt(availableFlags.getText().toString()) - 1));
                         }
                         mineButton[(10 * finalI) + finalJ].setRealFlag(1);
                         mineButton[(10 * finalI) + finalJ].setImageResource(R.drawable.flagged);
-                    }
-                    else if(mineButton[(10 * finalI) + finalJ].getRealFlag() == 1){
-                        availableFlags.setText(Integer.toString(Integer.parseInt(availableFlags.getText().toString()) + 1));
+                    } else if (mineButton[(10 * finalI) + finalJ].getRealFlag() == 1) {
+                        availableFlags.setText("" + (Integer.parseInt(availableFlags.getText().toString()) + 1));
                         mineButton[(10 * finalI) + finalJ].setRealFlag(0);
                         mineButton[(10 * finalI) + finalJ].setImageResource(R.drawable.normal);
                     }
@@ -238,6 +252,7 @@ public class GameWindow extends AppCompatActivity {
 
             if(mineButton[id - 1].isEnabled() && j > 0){
                 mineButton[id - 1].performClick();
+                mineButton[id - 1].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
 
@@ -246,6 +261,7 @@ public class GameWindow extends AppCompatActivity {
         try{
 
             if(mineButton[id + 1].isEnabled() && j < 9){
+                mineButton[id + 1].performClick();
                 mineButton[id + 1].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
@@ -256,6 +272,7 @@ public class GameWindow extends AppCompatActivity {
 
             if(mineButton[id - 11].isEnabled() && i > 0 && j > 0){
                 mineButton[id - 11].performClick();
+                mineButton[id - 11].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
 
@@ -264,6 +281,7 @@ public class GameWindow extends AppCompatActivity {
         try{
 
             if(mineButton[id + 11].isEnabled() && i < h - 1 && j < 9){
+                mineButton[id + 11].performClick();
                 mineButton[id + 11].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
@@ -274,6 +292,7 @@ public class GameWindow extends AppCompatActivity {
 
             if(mineButton[id - 9].isEnabled() && i > 0 && j < 9){
                 mineButton[id - 9].performClick();
+                mineButton[id - 9].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
 
@@ -282,6 +301,7 @@ public class GameWindow extends AppCompatActivity {
         try{
 
             if(mineButton[id + 9].isEnabled() && i < h - 1 && j > 0){
+                mineButton[id + 9].performClick();
                 mineButton[id + 9].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
@@ -292,6 +312,7 @@ public class GameWindow extends AppCompatActivity {
 
             if(mineButton[id - 10].isEnabled() && i > 0){
                 mineButton[id - 10].performClick();
+                mineButton[id - 10].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
 
@@ -301,6 +322,7 @@ public class GameWindow extends AppCompatActivity {
 
             if(mineButton[id + 10].isEnabled() && i < h - 1){
                 mineButton[id + 10].performClick();
+                mineButton[id + 10].performClick();
             }
         }catch (ArrayIndexOutOfBoundsException e){
 
@@ -308,6 +330,8 @@ public class GameWindow extends AppCompatActivity {
     }
 
     private void boom(){
+
+        running = false;
 
         gameState.setImageResource(R.drawable.sad);
         System.out.println("Bad luck!!!");
@@ -372,6 +396,7 @@ public class GameWindow extends AppCompatActivity {
         if(flag){
             for(int i = 0; i < h * 10; i++){
                 if(mineButton[i].getSet() == 1){
+                    mineButton[i].setEnabled(false);
                     mineButton[i].setImageResource(R.drawable.flagged);
                     mineButton[i].setRealFlag(-1);
                 }
@@ -381,7 +406,99 @@ public class GameWindow extends AppCompatActivity {
 
             Toast.makeText(GameWindow.this,
                     "Well done...", Toast.LENGTH_SHORT).show();
-            availableFlags.setText("0");
+            availableFlags.setText("" + 0);
+            running = false;
         }
+    }
+
+    //##############################################################################
+    //                  STOPWATCH CODE STARTS HERE
+    //##############################################################################
+
+    // Use seconds, running and wasRunning respectively
+    // to record the number of seconds passed,
+    // whether the stopwatch is running and
+    // whether the stopwatch was running
+    // before the activity was paused.
+
+    // Number of seconds displayed
+    // on the stopwatch.
+    private int seconds = 0;
+
+    // Is the stopwatch running?
+    private boolean running = false;
+
+    private boolean wasRunning = false;
+
+    // If the activity is paused,
+    // stop the stopwatch.
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        wasRunning = running;
+        running = false;
+    }
+
+    // If the activity is resumed,
+    // start the stopwatch
+    // again if it was running previously.
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (wasRunning) {
+            running = true;
+            wasRunning = false;
+        }
+    }
+
+    private void runTimer()
+    {
+
+        // Creates a new Handler
+        final Handler handler
+                = new Handler();
+
+        // Call the post() method,
+        // passing in a new Runnable.
+        // The post() method processes
+        // code without a delay,
+        // so the code in the Runnable
+        // will run almost immediately.
+        handler.post(new Runnable() {
+            @Override
+
+            public void run()
+            {
+                int hours = seconds / 3600;
+                int minutes = (seconds % 3600) / 60;
+                int secs = seconds % 60;
+
+                // Format the seconds into hours, minutes,
+                // and seconds.
+                String time
+                        = String
+                        .format(Locale.getDefault(),
+                                "%d:%02d:%02d", hours,
+                                minutes, secs);
+
+                // Set the text view text.
+                time_view.setText(time);
+
+                // If running is true, increment the
+                // seconds variable.
+                if (running) {
+                    seconds++;
+                }
+                else if(!wasRunning){
+                    handler.removeCallbacks(this);
+                }
+
+                // Post the code again
+                // with a delay of 1 second.
+                handler.postDelayed(this, 1000);
+            }
+        });
     }
 }

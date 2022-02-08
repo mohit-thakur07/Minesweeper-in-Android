@@ -17,6 +17,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Difficulty level"
+        android:textSize="18sp"
+        android:layout_marginLeft ="50dp"
+        android:layout_marginStart="50dp"
+        android:labelFor="@id/difficulty_level"
+        app:layout_constraintBottom_toTopOf="@id/difficulty_level"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <RadioGroup
         android:id="@+id/difficulty_level"
         android:layout_width="wrap_content"
@@ -47,6 +58,42 @@
             android:text="Impossible" />
     </RadioGroup>
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dig type"
+        android:textSize="18sp"
+        android:layout_marginLeft ="50dp"
+        android:layout_marginStart="50dp"
+        android:labelFor="@id/dig_type"
+        app:layout_constraintBottom_toTopOf="@id/dig_type"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <RadioGroup
+        android:id="@+id/dig_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkedButton="@id/radioButton4"
+        android:orientation="horizontal"
+        android:layout_margin="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/difficulty_level">
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:text="Single Click" />
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:text="Double Click" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/play_button"
         android:layout_width="wrap_content"
@@ -54,7 +101,7 @@
         android:text="Play"
         android:drawableLeft="@drawable/ic_play"
         android:drawableTint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/difficulty_level"
+        app:layout_constraintTop_toBottomOf="@id/dig_type"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 public class MineButton extends AppCompatImageButton {
 
     private int val, set, realFlag, id;
+    long prevClick;
 
     public MineButton(@NonNull Context context) {
         super(context);
@@ -15,6 +16,7 @@ public class MineButton extends AppCompatImageButton {
         setImageResource(R.drawable.normal);
 
         val = set = realFlag = 0;
+        prevClick = 0;
         id = -1;
     }
 

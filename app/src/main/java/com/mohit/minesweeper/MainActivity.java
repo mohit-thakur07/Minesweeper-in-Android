@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 public class MainActivity extends AppCompatActivity {
 
     static int width, height, bombCount = 20;
+    static boolean isDTSC = true; //is digging type long press
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RadioGroup diff = findViewById(R.id.difficulty_level);
+        RadioGroup fT = findViewById(R.id.dig_type);
 
         diff.setOnCheckedChangeListener((radioGroup, i) -> {
             int id = diff.getCheckedRadioButtonId();
@@ -32,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 bombCount = -1;
+            }
+        });
+
+        fT.setOnCheckedChangeListener((radioGroup, i) -> {
+            int id = fT.getCheckedRadioButtonId();
+
+            if(id == R.id.radioButton4){
+                isDTSC = true;
+            }
+            else{
+                isDTSC = false;
             }
         });
 
